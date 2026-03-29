@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="/css/navbar.css">
+
+<nav class="navbar">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="/listings" class="nav-logo">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+        <path d="M16 1C10.925 1 5.516 9.681 3.171 14.408c-.603 1.232-.903 1.849-.903 2.592 0 .743.3 1.36.903 2.592C5.516 24.319 10.925 31 16 31s10.484-6.681 12.829-11.408c.603-1.232.903-1.849.903-2.592 0-.743-.3-1.36-.903-2.592C26.484 9.681 21.075 1 16 1zm0 20a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" fill="#FF385C"/>
+      </svg>
+      <span class="logo-text">WanderStay</span>
+    </a>
+
+    <!-- Search Bar (desktop) -->
+    <form class="nav-search" action="/listings" method="GET">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" name="search" placeholder="Search destinations..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>" />
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Center Links (desktop) -->
+    <div class="nav-links">
+      <a href="/listings" class="nav-link">Explore</a>
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <a href="/listings/new" class="nav-link highlight">+ Add Listing</a>
+      <% } %>
+    </div>
+
+    <!-- Auth (desktop) -->
+    <div class="nav-auth">
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <div class="user-menu" id="userMenu">
+          <div class="user-pill" id="userPill">
+            <div class="user-avatar"><%= currentUser.username[0].toUpperCase() %></div>
+            <span class="username"><%= currentUser.username %></span>
+            <svg class="chevron" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <path d="M4 6l4 4 4-4" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="dropdown" id="dropdown">
+            <a href="/logout" class="dropdown-item logout">Log out</a>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="/signup" class="btn btn-outline">Sign up</a>
+        <a href="/login" class="btn btn-primary">Log in</a>
+      <% } %>
+    </div>
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+
+    <!-- Search Bar (mobile) -->
+    <form class="mobile-search" action="/listings" method="GET">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" name="search" placeholder="Search destinations..." />
+      <button type="submit">Go</button>
+    </form>
+
+    <a href="/listings" class="mobile-link">Home</a>
+    <a href="/listings" class="mobile-link">All Listings</a>
+    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+      <a href="/listings/new" class="mobile-link highlight">+ Add Listing</a>
+      <div class="mobile-divider"></div>
+      <a href="/logout" class="mobile-link logout">Log out</a>
+    <% } else { %>
+      <div class="mobile-divider"></div>
+      <a href="/signup" class="mobile-link">Sign up</a>
+      <a href="/login" class="mobile-link mobile-primary">Log in</a>
+    <% } %>
+  </div>
+</nav>
+
+<!-- Flash Messages -->
+<% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+  <div class="flash flash-success">
+    <span>✓ &nbsp;<%= success[0] %></span>
+    <button onclick="this.parentElement.remove()">✕</button>
+  </div>
+<% } %>
+<% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+  <div class="flash flash-error">
+    <span>✕ &nbsp;<%= error[0] %></span>
+    <button onclick="this.parentElement.remove()">✕</button>
+  </div>
+<% } %>
+
+<script>
+  const pill = document.getElementById('userPill');
+  const dropdown = document.getElementById('dropdown');
+  if (pill && dropdown) {
+    pill.addEventListener('click', e => { e.stopPropagation(); pill.classList.toggle('active'); dropdown.classList.toggle('open'); });
+    document.addEventListener('click', () => { pill.classList.remove('active'); dropdown.classList.remove('open'); });
+  }
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', e => { e.stopPropagation(); const isOpen = mobileMenu.classList.toggle('open'); hamburger.classList.toggle('open', isOpen); hamburger.setAttribute('aria-expanded', isOpen); });
+    document.addEventListener('click', e => { if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) { mobileMenu.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', false); } });
+  }
+</script>

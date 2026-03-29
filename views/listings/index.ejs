@@ -1,0 +1,126 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+  <link rel="stylesheet" href="/css/listings.css">
+  <div id="filters">
+    <div class="filter-scroll">
+
+      <!-- ALL -->
+      <div class="icons <%= !category ? 'active' : '' %>" onclick="filterCategory('')">
+        <i class="fa-solid fa-border-all"></i>
+        <p>All</p>
+      </div>
+
+      <div class="icons <%= category === 'Trending' ? 'active' : '' %>" onclick="filterCategory('Trending')">
+        <i class="fa-solid fa-fire"></i>
+        <p>Trending</p>
+      </div>
+
+      <div class="icons <%= category === 'Lake' ? 'active' : '' %>" onclick="filterCategory('Lake')">
+        <i class="fa-solid fa-water"></i>
+        <p>Lake</p>
+      </div>
+
+      <div class="icons <%= category === 'Mountain' ? 'active' : '' %>" onclick="filterCategory('Mountain')">
+        <i class="fa-solid fa-mountain"></i>
+        <p>Mountain</p>
+      </div>
+
+      <div class="icons <%= category === 'Beach' ? 'active' : '' %>" onclick="filterCategory('Beach')">
+        <i class="fa-solid fa-umbrella-beach"></i>
+        <p>Beach</p>
+      </div>
+
+      <div class="icons <%= category === 'Forest' ? 'active' : '' %>" onclick="filterCategory('Forest')">
+        <i class="fa-solid fa-tree"></i>
+        <p>Forest</p>
+      </div>
+
+      <div class="icons <%= category === 'City' ? 'active' : '' %>" onclick="filterCategory('City')">
+        <i class="fa-solid fa-city"></i>
+        <p>City</p>
+      </div>
+
+      <div class="icons <%= category === 'Camping' ? 'active' : '' %>" onclick="filterCategory('Camping')">
+        <i class="fa-solid fa-campground"></i>
+        <p>Camping</p>
+      </div>
+
+      <div class="icons <%= category === 'Cafes' ? 'active' : '' %>" onclick="filterCategory('Cafes')">
+        <i class="fa-solid fa-mug-hot"></i>
+        <p>Cafes</p>
+      </div>
+
+
+      <div class="icons <%= category === 'Hotels' ? 'active' : '' %>" onclick="filterCategory('Hotels')">
+        <i class="fa-solid fa-hotel"></i>
+        <p>Hotels</p>
+      </div>
+
+      <div class="icons <%= category === 'Hiking' ? 'active' : '' %>" onclick="filterCategory('Hiking')">
+        <i class="fa-solid fa-person-hiking"></i>
+        <p>Hiking</p>
+      </div>
+
+      <div class="icons <%= category === 'Boating' ? 'active' : '' %>" onclick="filterCategory('Boating')">
+        <i class="fa-solid fa-ship"></i>
+        <p>Boating</p>
+      </div>
+
+      <div class="icons <%= category === 'Relax' ? 'active' : '' %>" onclick="filterCategory('Relax')">
+        <i class="fa-solid fa-spa"></i>
+        <p>Relax</p>
+      </div>
+
+      <div class="icons <%= category === 'Historical' ? 'active' : '' %>" onclick="filterCategory('Historical')">
+        <i class="fa-solid fa-landmark"></i>
+        <p>Historical</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="listings-grid">
+    <% for(let list of allListings) { %>
+      <a href="/listings/<%= list._id %>" class="listing-card-link">
+        <div class="listing-card">
+
+          <div class="listing-img-wrap">
+            <img
+              src="<%= list.image.url || 'https://plus.unsplash.com/premium_photo-1771774994010-576337c0d143?w=600&auto=format&fit=crop&q=60' %>"
+              class="listing-img" alt="<%= list.title %>" loading="lazy" />
+            <div class="listing-img-overlay"></div>
+          </div>
+
+          <div class="listing-body">
+            <h6 class="listing-title">
+              <%= list.title %>
+            </h6>
+            <p class="listing-location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#FF385C">
+                <path
+                  d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+              </svg>
+              <%= list.location %>, <%= list.country %>
+            </p>
+            <p class="listing-price">
+              <span class="price-amount">&#8377;&nbsp;<%= (list.price || 0).toLocaleString("en-IN") %></span>
+              <span class="price-night">/ night</span>
+            </p>
+          </div>
+
+        </div>
+      </a>
+      <% } %>
+  </div>
+
+  <script>
+    function filterCategory(category) {
+      if (category === '') {
+        window.location.href = "/listings";
+      } else {
+        window.location.href = `/listings?category=${category}`;
+      }
+    }
+
+  </script>

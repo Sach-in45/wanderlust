@@ -1,0 +1,67 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="row">
+  <div class="col-lg-8 offset-lg-2">
+    <h4 class="mb-4">Edit Listing</h4>
+
+    <form action="/listings/<%= thisListing._id %>?_method=PUT" method="POST"
+      novalidate class="needs-validation mb-3" enctype="multipart/form-data">
+
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="listing[title]"
+          value="<%= thisListing.title %>" class="form-control" required />
+        <div class="invalid-feedback">Title is required!</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" id="description"
+          class="form-control" rows="4" required><%= thisListing.description %></textarea>
+        <div class="invalid-feedback">Description is required!</div>
+      </div>
+
+      <div class="mb-3">
+        Original Image <br>
+        <img src="<%= originalImageUrl %>" alt="">
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" name="listing[image]"
+          class="form-control" />
+        <div class="form-text">Leave blank to keep the current image.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="listing[location]"
+          value="<%= thisListing.location %>" class="form-control" required />
+        <div class="invalid-feedback">Location is required!</div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="country" class="form-label">Country</label>
+          <input type="text" name="listing[country]"
+            value="<%= thisListing.country %>" class="form-control" required />
+          <div class="invalid-feedback">Country is required!</div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="price" class="form-label">Price per night (&#8377;)</label>
+          <input type="number" name="listing[price]"
+            value="<%= thisListing.price %>" class="form-control" required min="1" />
+          <div class="invalid-feedback">Enter a valid price!</div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-2">
+        <button class="btn btn-dark edit-btn">
+          <i class="fa-solid fa-floppy-disk me-1"></i>Save Changes
+        </button>
+        <a href="/listings/<%= thisListing._id %>" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
